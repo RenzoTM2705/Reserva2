@@ -1,0 +1,62 @@
+@import "tailwindcss";
+
+/* ============================================================
+ * RESERVA2 — Tokens de identidad «Editorial cálida»
+ * ============================================================
+ * Fuente única de verdad de la identidad visual. Los tokens no
+ * producen interfaz por sí mismos: las páginas y componentes se
+ * construyen en sus fases correspondientes.
+ *
+ * Ver docs/UX.md para el significado de cada token.
+ * ============================================================ */
+
+@theme {
+    /* Superficies */
+    --color-paper: #faf7f2;
+    --color-surface: #ffffff;
+    --color-sunken: #f3eee6;
+
+    /* Texto */
+    --color-ink: #1a1714;
+    --color-ink-soft: #55504a;
+    --color-ink-muted: #8a8178;
+
+    /* Bordes */
+    --color-rule: #e4dccf;
+    --color-rule-strong: #d3c7b6;
+
+    /* Acento */
+    --color-accent: #b4552d;
+    --color-accent-hover: #99461f;
+    --color-accent-soft: #f6e9e1;
+    --color-accent-ink: #7a3618;
+
+    /* Estados de reserva */
+    --color-pending: #b8862f;
+    --color-pending-soft: #fbf3e3;
+    --color-confirmed: #2e6e4f;
+    --color-confirmed-soft: #e7f2eb;
+    --color-completed: #55504a;
+    --color-completed-soft: #efeae2;
+    --color-cancelled: #a33a2a;
+    --color-cancelled-soft: #f9e9e6;
+    --color-noshow: #6b5e8c;
+    --color-noshow-soft: #efeaf5;
+
+    /* Semánticos */
+    --color-danger: #a33a2a;
+    --color-success: #2e6e4f;
+
+    /* Tipografía */
+    --font-display: "Fraunces Variable", ui-serif, Georgia, serif;
+    --font-sans: "Instrument Sans Variable", ui-sans-serif, system-ui, -apple-system, sans-serif;
+
+    /* Radios */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+    --radius-xl: 20px;
+
+    /* Profundidad: una sola sombra, muy sutil */
+    --shadow-card: 0 1px 2px rgb(26 23 20 / 0.04), 0 12px 32px -20px rgb(26 23 20 / 0.22);
+}

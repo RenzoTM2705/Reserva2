@@ -1,0 +1,45 @@
+# Dependencias
+node_modules/
+.pnpm-store/
+
+# Build
+dist/
+build/
+out/
+*.tsbuildinfo
+
+# Entorno y secretos
+.env
+.env.local
+.env.*.local
+!.env.example
+!frontend/.env.example
+
+# Supabase (CLI)
+supabase/.temp/
+supabase/.branches/
+supabase/.env
+supabase/.env.local
+
+# Tests y cobertura
+coverage/
+playwright-report/
+test-results/
+blob-report/
+.playwright/
+
+# Herramientas
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Artefactos locales
+tmp/
+.cache/

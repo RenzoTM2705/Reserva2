@@ -1,0 +1,21 @@
+{
+  "name": "reserva2",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Plataforma de gestión de reservas para pequeños negocios y profesionales independientes.",
+  "scripts": {
+    "dev": "pnpm -C frontend dev",
+    "build": "pnpm -C frontend build",
+    "lint": "pnpm -C frontend lint",
+    "typecheck": "pnpm -C frontend typecheck",
+    "test": "pnpm -C frontend test",
+    "test:run": "pnpm -C frontend test:run",
+    "preview": "pnpm -C frontend preview",
+    "db:push": "supabase db push",
+    "db:diff": "supabase db diff",
+    "db:lint": "supabase db lint",
+    "db:reset": "supabase db reset",
+    "db:seed": "supabase db seed",
+    "types:gen": "supabase gen types typescript --project-id $SUPABASE_PROJECT_ID --schema public > frontend/src/types/database.generated.ts"
+  }
+}
