@@ -37,10 +37,11 @@
 
 ## Estado actual
 
-- **Fase:** 1 · Cimientos (en curso).
-- **Hecho:** estructura del repositorio, documentación base adaptada, configuración raíz, toolchain del frontend y tokens de diseño. Sin páginas, componentes visuales, migraciones ni CI todavía (decisión del propietario para trabajar por ramas).
-- **Próximo:** iniciar la Fase 1 en su rama: migraciones, RLS, RPC, seed, CI y prueba de aislamiento entre dos negocios.
-- **Bloqueos:** credenciales del proyecto Supabase.
+- **Fase:** 2 · Flujo público + 3 · Panel (interfaz web, en curso).
+- **Hecho:** estructura del repositorio, documentación base adaptada, toolchain del frontend y tokens de diseño. Interfaz web completa (fase de UI): landing, página pública de negocio, asistente de reserva en 5 pasos con estado en la URL, consulta por `confirmation_token`, auth (entrar/crear cuenta/recuperar), onboarding y panel completo (resumen, reservas con filtros y transiciones de estado, calendario mensual, CRUD de servicios y profesionales con asignación de servicios, clientes y configuración con horario semanal). Disponibilidad solo vía RPC `get_available_slots`; estado de UI en `searchParams`; `zod-resolver` propio (sin `@hookform/resolvers`). Checks `lint`, `typecheck`, `test:run` y `build` en verde.
+- **Modo maqueta visual:** sin credenciales de Supabase, la capa de datos sirve datos de ejemplo en memoria (`lib/demo.ts`) para apreciar la interfaz; los cambios no persisten y el aviso va solo a la consola, nunca a la UI (decisión del propietario). No es cálculo de disponibilidad ni lógica real.
+- **Próximo:** credenciales de Supabase para probar el flujo real punta a punta; luego criterios de salida de las fases (reserva real desde móvil, RLS contra base real).
+- **Bloqueos:** credenciales del proyecto Supabase (`frontend/.env.local` aún no existe).
 
 ## Mantenimiento
 
