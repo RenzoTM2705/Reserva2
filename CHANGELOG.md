@@ -27,6 +27,9 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 **Cliente de datos**
 - Cliente de Supabase creado de forma perezosa y validación de variables de entorno.
 
+**Skills de diseño para agentes (nivel proyecto)**
+- Instaladas en `.agents/skills` con `skills-lock.json` versionado: `frontend-design`, `web-design-guidelines`, `ui-ux-pro-max`, `emil-design-eng` y `shadcn`. Se evaluó y descartó `design-taste-frontend` (auditoría Gen fallida y ~38 MB de assets de terceros).
+
 ### Pendiente (se trabaja en ramas por fase)
 
 - Migraciones de esquema, RLS, disponibilidad, reservas y `seed.sql`.
@@ -36,3 +39,4 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 - Maqueta e interfaz del producto (Fase 2 en adelante).
 - Dependencias específicas de fases posteriores (formularios, animación, gráficos, tipografías, iconos, E2E), que se añadirán con aprobación previa.
 - Marca definitiva (logo, favicon, imagen Open Graph).
+- Revisar el contenido de las skills antes de aplicarlas en trabajo real.
