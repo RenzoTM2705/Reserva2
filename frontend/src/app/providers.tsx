@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { QueryClientProvider } from '@tanstack/react-query';
+import { Toaster } from 'sonner';
 import { queryClient } from '@/lib/query-client';
 
 interface AppProvidersProps {
@@ -9,15 +10,23 @@ interface AppProvidersProps {
 /**
  * Providers globales de la aplicación.
  *
- * Por ahora solo TanStack Query (estado de servidor). El resto de providers
- * se añadirá en la fase que los necesite, no antes.
+ * - TanStack Query: estado de servidor (caché, reintentos, invalidación).
+ * - Sonner: notificaciones breves y accesibles.
  *
- * Ver docs/DECISIONS.md (ADR-005: sin store global; estado de UI en la URL).
+ * El estado de UI (filtros, pasos del asistente) vive en la URL o en
+ * `useState`; no hay store global a propósito. Ver docs/DECISIONS.md (ADR-005).
  */
 export function AppProviders({ children }: AppProvidersProps) {
     return (
         <QueryClientProvider client={queryClient}>
             {children}
+            <Toaster
+                position="bottom-right"
+                closeButton
+                toastOptions={{
+                    className: 'font-sans',
+                }}
+            />
         </QueryClientProvider>
     );
 }
