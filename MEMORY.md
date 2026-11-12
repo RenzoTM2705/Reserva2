@@ -12,6 +12,7 @@
 - **Orden de construcción:** flujo público antes que panel administrativo. Motivo: es la pieza de mayor riesgo técnico y la más demostrable.
 - **Sin Zustand, sin axios, sin librería de calendario genérica.** Estado de servidor con TanStack Query; estado de UI en la URL.
 - **La plantilla documental se copia del vault** (`Boveda-Obsidian/Proyectos`) y se adapta en este repo. La bóveda es capa personal; el repo es la fuente de verdad.
+- **Skills de diseño instaladas a nivel proyecto** en `.agents/skills` con `skills-lock.json` versionado, por preferencia del propietario de usar skills populares y bien valoradas. Se eligió un conjunto curado de cinco (`frontend-design`, `web-design-guidelines`, `ui-ux-pro-max`, `emil-design-eng`, `shadcn`) y se descartó `design-taste-frontend` por auditoría Gen fallida y ~38 MB de assets de terceros. Las skills se revisan antes de aplicarlas; se ejecutan con permisos completos.
 
 ## Restricciones vigentes
 

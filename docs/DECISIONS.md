@@ -154,3 +154,31 @@
 **Consecuencias**
 - Un único lugar para cambiar la identidad visual.
 - Los nombres de los tokens son parte del contrato del equipo.
+
+---
+
+## ADR-009 · Skills de diseño a nivel de proyecto, en conjunto curado
+
+**Fecha:** Fase 1
+**Estado:** Aceptada
+
+**Contexto.** El propietario pidió integrar en Reserva2 las skills de diseño más populares y mejor valoradas, en una carpeta `skills`.
+
+**Opciones**
+1. Instalar las mejor valoradas del ranking `skills.sh` sin más criterios.
+2. Instalar un conjunto curado de cinco skills populares y con auditoría aceptable, documentando descartes.
+
+**Decisión.** Opción 2. Se instala en `.agents/skills` (ubicación estándar de OpenCode a nivel de proyecto):
+
+- `frontend-design` (`anthropics/skills`, ~1,1 M instalaciones).
+- `web-design-guidelines` (`vercel-labs/agent-skills`, ~852 K).
+- `ui-ux-pro-max` (`nextlevelbuilder/ui-ux-pro-max-skill`, ~447 K; Seguro · Bajo).
+- `emil-design-eng` (`emilkowalski/skills`, ~440 K; Seguro · Bajo).
+- `shadcn` (`shadcn/ui`, ~271 K; Seguro · Medio).
+
+Se descarta `design-taste-frontend` (`leonxlnx/taste-skill`, ~764 K): Gen Agent Trust Hub **Falla**, Snyk avisa, y su repositorio redistribuye ~38 MB de fotos y assets de terceros (`assets/photos/`, `assets/objects/`…) con su propio archivo de créditos, que no conviene versionar ni usar sin revisión.
+
+**Consecuencias**
+- `skills-lock.json` se versiona para poder restaurarlas (`npx skills experimental_install`) y auditar su hash.
+- Las skills se ejecutan con los permisos completos del agente: se revisan antes de aplicarlas.
+- Volver a evaluar skills descartadas cuando su auditoría cambie.

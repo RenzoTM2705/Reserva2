@@ -28,6 +28,7 @@ Reserva2/
 ├─ supabase/          # migraciones, seed y configuración del proyecto
 ├─ docs/              # PRD · TRD · FLOW · UX · IMPLEMENTATION_PLAN · DECISIONS
 ├─ .github/workflows/ # CI
+├─ .agents/skills/    # skills de diseño para agentes (con skills-lock.json)
 └─ AGENTS.md, PROJECT_BRIEF.md, CONTEXT.md, MEMORY.md,
    SKILLS.md y checklists
 ```
@@ -129,6 +130,27 @@ Detalle completo en [`docs/TRD.md`](docs/TRD.md).
 | [`docs/UX.md`](docs/UX.md) | Identidad visual y sistema de diseño |
 | [`docs/IMPLEMENTATION_PLAN.md`](docs/IMPLEMENTATION_PLAN.md) | Fases, criterios de salida y rollback |
 | [`docs/DECISIONS.md`](docs/DECISIONS.md) | ADRs |
+
+## Skills para agentes
+
+El proyecto incluye skills de diseño a nivel de repositorio, en `.agents/skills` (ubicación estándar de OpenCode a nivel proyecto), con `skills-lock.json` versionado en la raíz.
+
+| Skill | Fuente | Instalaciones | Riesgo declarado por los escáneres |
+|---|---|---|---|
+| `frontend-design` | `anthropics/skills` | ~1,1 M | Revisar antes de aplicar |
+| `web-design-guidelines` | `vercel-labs/agent-skills` | ~852 K | Revisar antes de aplicar |
+| `ui-ux-pro-max` | `nextlevelbuilder/ui-ux-pro-max-skill` | ~447 K | Seguro · Bajo |
+| `emil-design-eng` | `emilkowalski/skills` | ~440 K | Seguro · Bajo |
+| `shadcn` | `shadcn/ui` | ~271 K | Seguro · Medio |
+
+```bash
+npx skills list         # skills instaladas en el proyecto
+npx skills update -p    # actualizar a nivel proyecto
+```
+
+> Las skills se ejecutan con los permisos completos del agente. Revisa su contenido antes de aplicarlas.
+>
+> Se descartó `design-taste-frontend` (`leonxlnx/taste-skill`, 764 K descargas): la auditoría Gen Agent Trust Hub falla, Snyk avisa y su repositorio redistribuye ~38 MB de imágenes y assets de terceros que no conviene versionar ni usar sin revisión. Ver [`docs/DECISIONS.md`](docs/DECISIONS.md) (ADR-009).
 
 ## Fases
 
