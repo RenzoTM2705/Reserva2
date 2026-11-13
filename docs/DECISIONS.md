@@ -182,3 +182,23 @@ Se descarta `design-taste-frontend` (`leonxlnx/taste-skill`, ~764 K): Gen Agent 
 - `skills-lock.json` se versiona para poder restaurarlas (`npx skills experimental_install`) y auditar su hash.
 - Las skills se ejecutan con los permisos completos del agente: se revisan antes de aplicarlas.
 - Volver a evaluar skills descartadas cuando su auditoría cambie.
+
+---
+
+## ADR-010 · Un negocio por cuenta en el MVP
+
+**Fecha:** Fase 1 (backend)
+**Estado:** Aceptada
+
+**Contexto.** El onboarding y el panel asumen una sola membresía por usuario: `getMyMembership()` usa `maybeSingle()` y el panel no tiene selector de negocio. Permitir varias membresías obligaría a añadir un contexto de negocio activo en la URL y en cada consulta.
+
+**Opciones**
+1. Varias membresías por usuario desde el inicio (selector de negocio).
+2. Una membresía por usuario en el MVP, con `UNIQUE (user_id)` en `memberships`.
+
+**Decisión.** Opción 2. La RPC `create_business` valida la ausencia de membresía y devuelve `business_exists` si ya existe. El límite vive en la base (`memberships_user_id_key`), no solo en la UI.
+
+**Consecuencias**
+- El panel y el onboarding quedan simples y sin ambigüedad.
+- Un profesional que trabaje en dos negocios necesitará dos cuentas hasta que se aborde el soporte multi-negocio.
+- Levantar la restricción es una migración pequeña (quitar el índice único y añadir selector), pero exige revisar todas las consultas que hoy asumen una membresía.

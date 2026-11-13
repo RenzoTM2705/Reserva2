@@ -24,7 +24,7 @@ create type public.booking_source as enum ('public', 'admin');
 
 | Tabla | Propósito | Claves y restricciones relevantes |
 |---|---|---|
-| `businesses` | Tenant | `slug` UNIQUE; `timezone` IANA; `currency` ISO 4217; `is_published` |
+| `businesses` | Tenant | `slug` UNIQUE; `timezone` IANA; `currency` ISO 4217; `is_published`; `slot_interval_minutes` 5–240 |
 | `memberships` | Usuario ↔ negocio | UNIQUE `(business_id, user_id)`; rol |
 | `services` | Catálogo | `duration_minutes` 5–1440; `price_cents >= 0`; `buffer_minutes` 0–240 |
 | `professionals` | Equipo | `is_active`; `color` de agenda |
@@ -36,10 +36,12 @@ create type public.booking_source as enum ('public', 'admin');
 | `bookings` | Reservas | `confirmation_token` UNIQUE; `blocked_until = ends_at + buffer` |
 | `booking_events` | Historial de estados | FK a `bookings` con `on delete cascade` |
 
+Todas las tablas hijas guardan `business_id` y las claves foráneas son compuestas —`(service_id, business_id)`, `(professional_id, business_id)`, `(customer_id, business_id)`— para que una fila no pueda referenciar un recurso de otro negocio aunque la RLS fallara. `professional_services` y `professional_hours` usan la misma técnica.
+
 ### 2.3 Restricción anti-solapamiento
 
 ```sql
-create extension if not exists btree_gist;
+create extension if not exists btree_gist with schema extensions;
 
 alter table public.bookings
   add constraint bookings_no_overlap
@@ -59,6 +61,8 @@ alter table public.bookings
 - `slug ~ '^[a-z0-9]+(-[a-z0-9]+)*$'`.
 - `weekday between 0 and 6`.
 - `is_closed or opens_at < closes_at`.
+- `timezone` debe existir en `pg_timezone_names` (trigger `businesses_validate_timezone`).
+- `business_id` de `professional_services` y `professional_hours` se deriva del profesional en un trigger antes de validar las claves compuestas.
 
 ## 3. Contrato de funciones RPC
 
@@ -95,7 +99,7 @@ public.create_booking(
 - **Flujo:** valida negocio publicado → servicio activo del negocio → profesional activo que realiza el servicio → ventana temporal → hueco dentro de `get_available_slots` → upsert de cliente → inserción de reserva → evento inicial.
 - **Estado inicial:** `pending` si `businesses.requires_confirmation`, si no `confirmed`.
 - **Respuesta:** `{ id, confirmation_token, starts_at, ends_at, status }`.
-- **Errores:** `business_not_found`, `service_not_found`, `professional_not_available`, `too_soon`, `too_far`, `slot_unavailable`, `invalid_email`, `invalid_name`.
+- **Errores:** `business_not_found`, `service_not_found`, `professional_not_available`, `too_soon`, `too_far`, `slot_unavailable`, `invalid_email`, `invalid_name`, `invalid_phone`, `invalid_notes`.
 - **Concurrencia:** si la restricción `EXCLUDE` salta pese a la validación, se captura `exclusion_violation` y se devuelve `slot_unavailable`.
 
 ### 3.3 `get_booking_status`
@@ -105,8 +109,9 @@ public.get_booking_status(p_token uuid) returns jsonb
 ```
 
 - **Roles:** `anon`, `authenticated`.
-- **Devuelve:** `booking_id`, `status`, `starts_at`, `ends_at`, `service_name`, `professional_name`, `business_name`, `business_slug`, `business_timezone`, `price_cents`, `currency`, `cancellation_policy`.
+- **Devuelve:** `booking_id`, `status`, `starts_at`, `ends_at`, `service_name`, `professional_name`, `business_name`, `business_slug`, `business_timezone`, `price_cents`, `currency`, `cancellation_policy_hours`.
 - **No devuelve:** email, teléfono ni notas del cliente.
+- **Errores:** `booking_not_found` si el token no existe.
 
 ### 3.4 `cancel_booking_by_token`
 
@@ -116,7 +121,8 @@ public.cancel_booking_by_token(p_token uuid, p_reason text default null) returns
 
 - **Roles:** `anon`, `authenticated`.
 - **Reglas:** solo `pending` o `confirmed`; solo antes de `starts_at - cancellation_policy_hours`; idempotente si ya está cancelada.
-- **Efecto:** estado `cancelled`, `cancelled_at`, evento en `booking_events`.
+- **Efecto:** estado `cancelled`, `cancelled_at`, evento en `booking_events` (con el motivo si se envía).
+- **Errores:** `booking_not_found`, `not_cancellable`, `cancellation_window_closed`.
 
 ### 3.5 `create_business`
 
@@ -126,7 +132,8 @@ public.create_business(p_name text, p_slug text) returns uuid
 
 - **Roles:** `authenticated`.
 - **Efecto:** crea el negocio (no publicado), la membresía `owner` para `auth.uid()` y el horario por defecto (lun–sáb 09:00–18:00, domingo cerrado).
-- **Errores:** `not_authenticated`, `slug_taken`.
+- **Límite:** una membresía por cuenta (ADR-010).
+- **Errores:** `not_authenticated`, `business_exists`, `slug_taken`, `invalid_name`, `invalid_slug`.
 
 ## 4. Políticas RLS
 
@@ -141,6 +148,10 @@ public.create_business(p_name text, p_slug text) returns uuid
 | `booking_events` | — | SELECT si es miembro |
 
 `INSERT` de `bookings` y `customers` desde el público solo ocurre dentro de `create_booking` (`SECURITY DEFINER`).
+
+Un usuario autenticado conserva el acceso de visitante a los negocios publicados: la política de lectura pública se aplica a `anon` y `authenticated`, y la de membresía se suma. Así puede reservar en otro negocio sin dejar de ver el propio. Los `GRANT` son por columna: el panel solo puede actualizar los campos que edita (`bookings`: `status`, `cancelled_at`, `notes`; `businesses`: los campos de configuración).
+
+Las transiciones de estado se validan con un trigger (`private.validate_booking_transition`), no con el cliente, y cada cambio se registra en `booking_events`.
 
 ### Helper de pertenencia
 
