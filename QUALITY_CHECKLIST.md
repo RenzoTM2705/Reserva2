@@ -89,6 +89,6 @@
 - [ ] Consola sin errores relevantes; requests sin fallos inesperados.
 - [ ] Caché configurada para assets apropiados.
 - [ ] Backups y restauración de Supabase definidos.
-- [ ] CI básica (lint, typecheck, tests, build) configurada.
+- [x] CI básica (lint, typecheck, tests, build) configurada en `.github/workflows/ci.yml`.
 - [ ] Certificado TLS y renovación automática confirmados por plataforma.
 - [ ] Search Console/Bing Webmaster configurados solo si aplican y el propietario tiene acceso.

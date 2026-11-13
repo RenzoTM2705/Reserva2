@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "description": "Plataforma de gestión de reservas para pequeños negocios y profesionales independientes.",
+  "packageManager": "pnpm@11.0.9",
   "scripts": {
     "dev": "pnpm -C frontend dev",
     "build": "pnpm -C frontend build",
@@ -11,11 +12,14 @@
     "test": "pnpm -C frontend test",
     "test:run": "pnpm -C frontend test:run",
     "preview": "pnpm -C frontend preview",
-    "db:push": "supabase db push",
-    "db:diff": "supabase db diff",
-    "db:lint": "supabase db lint",
+    "db:push": "supabase db push --remote",
+    "db:diff": "supabase db diff --remote",
+    "db:lint": "supabase db lint --remote",
     "db:reset": "supabase db reset",
-    "db:seed": "supabase db seed",
-    "types:gen": "supabase gen types typescript --project-id $SUPABASE_PROJECT_ID --schema public > frontend/src/types/database.generated.ts"
+    "db:seed": "supabase db push --include-seed --remote",
+    "types:gen": "node scripts/generate-types.mjs"
+  },
+  "devDependencies": {
+    "supabase": "3.1.0"
   }
 }
