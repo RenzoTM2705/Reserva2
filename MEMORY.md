@@ -16,15 +16,15 @@
 
 ## Restricciones vigentes
 
-- **Docker no está disponible** en la máquina de desarrollo: no se puede usar `supabase start` ni tests que dependan de un stack local.
-- **Sin credenciales de Supabase todavía.** Hasta que existan, las migraciones no se aplican y RLS no puede probarse contra una base real.
+- **Supabase cloud como entorno de desarrollo.** Docker está disponible y se usó para validar el esquema en un PostgreSQL 17 efímero, pero el proyecto de desarrollo sigue siendo Supabase cloud con migraciones versionadas.
+- **Sin credenciales de Supabase todavía.** El esquema se validó en un PostgreSQL 17 efímero; falta aplicarlo al proyecto Supabase real.
 - **Moneda por defecto `PEN`.** Cambiarla requiere decisión del propietario.
 - **Los datos de clientes son datos personales:** no se registran en logs, no se incluyen en mensajes de error y no se comparten entre negocios.
 - **No se inventan datos de negocio, precios, direcciones ni políticas legales.** Los placeholders se marcan como tales.
 
 ## Errores resueltos relevantes
 
-- **Docker Desktop apagado → `supabase start` falla.** Se eligió proyecto cloud con migraciones versionadas en lugar de forzar Docker.
+- **Docker Desktop apagado → `supabase start` falla.** Se eligió proyecto cloud con migraciones versionadas. La validación del esquema se hizo después con un contenedor PostgreSQL 17 efímero, no con el stack completo de Supabase.
 - *(Se irán registrando aquí los errores con causa raíz y prevención.)*
 
 ## Preferencias de colaboración
@@ -37,11 +37,12 @@
 
 ## Estado actual
 
-- **Fase:** 2 · Flujo público + 3 · Panel (interfaz web, en curso).
+- **Fase:** 2 · Flujo público + 3 · Panel (interfaz web) + backend base (SQL).
 - **Hecho:** estructura del repositorio, documentación base adaptada, toolchain del frontend y tokens de diseño. Interfaz web completa (fase de UI): landing, página pública de negocio, asistente de reserva en 5 pasos con estado en la URL, consulta por `confirmation_token`, auth (entrar/crear cuenta/recuperar), onboarding y panel completo (resumen, reservas con filtros y transiciones de estado, calendario mensual, CRUD de servicios y profesionales con asignación de servicios, clientes y configuración con horario semanal). Disponibilidad solo vía RPC `get_available_slots`; estado de UI en `searchParams`; `zod-resolver` propio (sin `@hookform/resolvers`). Checks `lint`, `typecheck`, `test:run` y `build` en verde.
+- **Backend SQL validado en PostgreSQL 17 efímero (2026-11-13):** las diez migraciones y `supabase/seed.sql` se aplicaron sin errores con `psql`. Se probaron el flujo público (`get_available_slots`, `create_booking`, `get_booking_status`, `cancel_booking_by_token`), el rechazo de solapamientos (`slot_unavailable` y `EXCLUDE` directo), la liberación del hueco al cancelar, las validaciones de entrada, las transiciones de estado, los triggers de `business_id` y zona horaria, y el aislamiento RLS entre dos cuentas. Incluye `EXCLUDE USING gist`, claves foráneas compuestas por negocio y bitácora `booking_events`. **No se aplicó aún al proyecto Supabase real**: faltan credenciales y la CLI.
 - **Modo maqueta visual:** sin credenciales de Supabase, la capa de datos sirve datos de ejemplo en memoria (`lib/demo.ts`) para apreciar la interfaz; los cambios no persisten y el aviso va solo a la consola, nunca a la UI (decisión del propietario). No es cálculo de disponibilidad ni lógica real.
-- **Próximo:** credenciales de Supabase para probar el flujo real punta a punta; luego criterios de salida de las fases (reserva real desde móvil, RLS contra base real).
-- **Bloqueos:** credenciales del proyecto Supabase (`frontend/.env.local` aún no existe).
+- **Próximo:** con credenciales, aplicar las migraciones al proyecto Supabase, ejecutar `seed.sql`, regenerar tipos y probar el flujo real punta a punta desde el frontend.
+- **Bloqueos:** credenciales del proyecto Supabase (`frontend/.env.local` aún no existe) y CLI de Supabase. Docker sí está disponible y se usó para la validación efímera.
 
 ## Mantenimiento
 

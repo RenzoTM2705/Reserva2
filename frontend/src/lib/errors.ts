@@ -17,14 +17,25 @@ const RPC_ERROR_MESSAGES: Record<string, string> = {
         'Ese hueco acaba de ocuparse. Elige otro horario disponible.',
     invalid_email: 'Revisa el correo electrónico.',
     invalid_name: 'Revisa el nombre del cliente.',
+    invalid_phone: 'Revisa el teléfono.',
+    invalid_notes: 'Las notas son demasiado largas.',
+    invalid_slug: 'Revisa la dirección del negocio.',
+    invalid_transition: 'Ese cambio de estado no es válido.',
+    invalid_timezone: 'Revisa la zona horaria (formato IANA, p. ej. America/Lima).',
     not_authenticated: 'Necesitas iniciar sesión para continuar.',
     slug_taken: 'Esa dirección ya está en uso. Prueba con otro nombre.',
+    business_exists: 'Tu cuenta ya tiene un negocio.',
+    booking_not_found: 'No encontramos esa reserva. Revisa el enlace.',
+    not_cancellable: 'Esta reserva ya no se puede cancelar.',
+    cancellation_window_closed:
+        'El plazo para cancelar ya venció. Contacta al negocio.',
 };
 
 const POSTGREST_HINTS: Record<string, string> = {
     '42501': 'No tienes permisos para esta operación.',
     PGRST301: 'La sesión expiró. Vuelve a iniciar sesión.',
     '42P01': 'La base de datos aún no tiene las migraciones aplicadas.',
+    '23503': 'No se puede eliminar: tiene reservas asociadas. Desactívalo en su lugar.',
 };
 
 /** Mensaje humano para un error conocido, o uno genérico seguro. */

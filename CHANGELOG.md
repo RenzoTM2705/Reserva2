@@ -27,16 +27,23 @@ El formato sigue [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/) y e
 **Cliente de datos**
 - Cliente de Supabase creado de forma perezosa y validación de variables de entorno.
 
+**Base de datos (validada en PostgreSQL 17 efímero, pendiente de aplicar a Supabase)**
+- Migraciones numeradas en `supabase/migrations`: tipos y `btree_gist`; negocios, membresías y horario; catálogo y ausencias; clientes, reservas y bitácora; triggers de integridad; RLS y helpers de pertenencia; `get_available_slots`; RPC de reserva; `create_business`; privilegios por columna.
+- Restricción `EXCLUDE USING gist` para impedir solapamientos por profesional, claves foráneas compuestas por negocio y transiciones de estado validadas en trigger.
+- `supabase/seed.sql` con un negocio ficticio publicado (sin datos personales reales) para probar el flujo público.
+- Validación local (2026-11-13): las diez migraciones y el seed se aplicaron sin errores; se probaron flujo público, solapamientos, liberación de huecos al cancelar, validaciones, transiciones, triggers y aislamiento RLS entre dos cuentas.
+
 **Skills de diseño para agentes (nivel proyecto)**
 - Instaladas en `.agents/skills` con `skills-lock.json` versionado: `frontend-design`, `web-design-guidelines`, `ui-ux-pro-max`, `emil-design-eng` y `shadcn`. Se evaluó y descartó `design-taste-frontend` (auditoría Gen fallida y ~38 MB de assets de terceros).
 
 ### Pendiente (se trabaja en ramas por fase)
 
-- Migraciones de esquema, RLS, disponibilidad, reservas y `seed.sql`.
+- Aplicar las migraciones al proyecto Supabase de desarrollo y ejecutar `seed.sql`.
 - CI de GitHub Actions.
-- Conexión del proyecto Supabase de desarrollo y prueba de aislamiento RLS entre dos negocios.
+- Repetir la prueba de aislamiento RLS contra el proyecto Supabase (ya validada en PostgreSQL efímero).
+- Tests automatizados de integración de RPC y concurrencia contra una base real.
 - Tipos generados desde la base de datos.
-- Maqueta e interfaz del producto (Fase 2 en adelante).
+- Flujo público real conectado a Supabase (sustituir el modo maqueta).
 - Dependencias específicas de fases posteriores (formularios, animación, gráficos, tipografías, iconos, E2E), que se añadirán con aprobación previa.
 - Marca definitiva (logo, favicon, imagen Open Graph).
 - Revisar el contenido de las skills antes de aplicarlas en trabajo real.
