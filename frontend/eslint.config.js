@@ -6,7 +6,14 @@ import tseslint from 'typescript-eslint';
 import { defineConfig, globalIgnores } from 'eslint/config';
 
 export default defineConfig([
-    globalIgnores(['dist', 'coverage', 'playwright-report', 'test-results']),
+    globalIgnores([
+        'dist',
+        'coverage',
+        'playwright-report',
+        'test-results',
+        // Generado por `pnpm types:gen`; su formato lo decide la CLI de Supabase.
+        'src/types/database.generated.ts',
+    ]),
     {
         files: ['**/*.{ts,tsx}'],
         extends: [

@@ -49,7 +49,7 @@ Usa los scripts definidos en `package.json`; no asumas que todos existen. El rep
 - Tests: `pnpm test` (watch) / `pnpm test:run` (una pasada)
 - Build: `pnpm build`
 - Base de datos: `pnpm db:push`, `pnpm db:diff`, `pnpm db:lint`, `pnpm db:reset` (solo local), `pnpm db:seed`
-- Tipos de la BD: `pnpm types:gen` (requiere `SUPABASE_PROJECT_ID`)
+- Tipos de la BD: `pnpm types:gen` (requiere el proyecto vinculado y un token con permiso `database_read`)
 
 El proyecto usa **pnpm** (`frontend/pnpm-lock.yaml`). No generes ni mezcles lockfiles con npm/yarn. No ejecutes migraciones contra producción sin aprobación explícita.
 

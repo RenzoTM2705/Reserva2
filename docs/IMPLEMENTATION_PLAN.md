@@ -6,7 +6,7 @@
 
 | Fase | Nombre | Estado | Criterio de salida |
 |---|---|---|---|
-| 1 | Cimientos | En curso | Toolchain, documentación, esquema, RLS, RPC y CI en verde |
+| 1 | Cimientos | Cierre pendiente del CI | Toolchain, documentación, esquema, RLS, RPC y CI en verde |
 | 2 | Flujo público | Pendiente | Reserva real de punta a punta sin cuenta |
 | 3 | Panel admin v1 | Pendiente | Catálogo y agenda gestionables |
 | 4 | Reservas + calendario | Pendiente | Operación diaria completa |
@@ -38,6 +38,15 @@
 **Riesgos**
 - La disponibilidad en SQL es la pieza más delicada. Se prueba con casos límite antes de tocar la UI.
 - Sin credenciales de Supabase, la fase queda "escrita" pero no "verificada". Se marca explícitamente.
+
+**Estado de cierre (2026-11-13)**
+
+- [x] `pnpm lint`, `pnpm typecheck`, `pnpm test:run` y `pnpm build` en verde en local.
+- [x] Migraciones aplicadas al proyecto Supabase `ogdnpltdsjmxojbuwdhw` y seed de un negocio.
+- [x] Tipos generados en `frontend/src/types/database.generated.ts`.
+- [x] Aislamiento RLS entre dos negocios probado en PostgreSQL efímero y en el proyecto real.
+- [x] CI en `.github/workflows/ci.yml` (lint, tipos, tests y build).
+- [ ] Primera ejecución del CI en verde: se comprueba al abrir el Pull Request.
 
 ---
 

@@ -10,7 +10,7 @@
 
 ## Datos y acceso
 
-> RLS y permisos validados manualmente en PostgreSQL 17 efímero (2026-11-13) con dos cuentas y dos negocios. Falta repetirlo contra el proyecto Supabase real.
+> RLS y permisos validados manualmente en PostgreSQL 17 efímero y repetidos en el proyecto Supabase real (2026-11-13) con `anon` y dos cuentas sintéticas: B no lee reservas ni clientes de A, no puede escribir en su negocio y A no ve el negocio no publicado de B.
 
 - [x] Validación y autorización se ejecutan en servidor.
 - [x] Queries parametrizadas; no concatenar input en SQL.

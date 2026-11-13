@@ -24,7 +24,7 @@
 - [x] RLS habilitada y políticas probadas en todas las tablas con datos de negocio.
 - [x] Las funciones `SECURITY DEFINER` fijan `search_path` y revocan permisos de `PUBLIC`.
 - [x] Extensiones necesarias declaradas explícitamente (`btree_gist`; `gen_random_uuid()` es nativo desde PostgreSQL 13).
-- [ ] Migraciones probadas en el proyecto de desarrollo antes de producción.
+- [x] Migraciones probadas en el proyecto de desarrollo antes de producción.
 - [x] Seeds de demostración separados de datos reales; nunca aplicar el seed en producción.
 - [ ] Backups de Supabase con restauración probada al menos una vez.
 
@@ -38,7 +38,7 @@
 
 ## Testing
 
-> Validación manual en PostgreSQL 17 efímero (2026-11-13), no automatizada: flujo público completo, hueco ocupado y liberado al cancelar, validaciones de entrada, transiciones de estado, triggers y aislamiento RLS entre dos cuentas. Los checkboxes de esta sección se marcarán al incorporar tests automatizados.
+> Validación manual, no automatizada: en PostgreSQL 17 efímero (2026-11-13) y repetida contra el proyecto Supabase real con `anon` y dos cuentas sintéticas. Cubre flujo público completo, hueco ocupado y liberado al cancelar, validaciones de entrada, transiciones de estado, triggers y aislamiento RLS entre dos cuentas. Los checkboxes de esta sección se marcarán al incorporar tests automatizados.
 
 - [ ] Pruebas de `get_available_slots`: día cerrado, sin profesional, con ausencia, con buffer, fuera de ventana.
 - [ ] Pruebas de `create_booking`: caso feliz, servicio inactivo, profesional ajeno al servicio, fuera de horario, conflicto de hueco.

@@ -89,12 +89,14 @@ Disponible en `http://localhost:5173`.
 
 | Script | Qué hace |
 |---|---|
-| `pnpm db:push` | Aplica las migraciones pendientes |
-| `pnpm db:diff` | Muestra el diff entre migraciones y base |
+| `pnpm db:push` | Aplica las migraciones pendientes al proyecto vinculado |
+| `pnpm db:diff` | Muestra el diff entre migraciones y base (requiere Docker para el shadow DB) |
 | `pnpm db:lint` | Analiza el esquema en busca de problemas |
-| `pnpm db:reset` | Recrea la base local (requiere Docker) |
-| `pnpm db:seed` | Carga los datos de demostración |
-| `pnpm types:gen` | Regenera `frontend/src/types/database.generated.ts` |
+| `pnpm db:reset` | Recrea la base local (requiere Docker; nunca el proyecto remoto) |
+| `pnpm db:seed` | Carga los datos de demostración (solo en una base recién migrada; el seed no es idempotente) |
+| `pnpm types:gen` | Regenera `frontend/src/types/database.generated.ts` de forma atómica |
+
+La CLI vive en `devDependencies`, así que no hace falta instalarla aparte. `db:push`, `db:seed` y `types:gen` apuntan al proyecto vinculado con `--remote`. `types:gen`, `db:diff` y `db:lint` usan la API de administración y necesitan un personal access token con los permisos `database_read`/`database_write`; `db:push` y `db:seed` solo usan la contraseña de la base.
 
 Las migraciones son inmutables una vez aplicadas. Para corregir algo se añade una migración nueva.
 
